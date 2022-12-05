@@ -1,25 +1,44 @@
+from utils import get_puzzle_input
 
-def get_calories(fname):
-    with open(fname, 'r') as f:
-        raw_input = f.read().strip()
+EXAMPLE_INPUT = """1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000"""
+EXAMPLE_SOLUTION_A = 24_000
+EXAMPLE_SOLUTION_B = 45_000
+
+
+def get_calories(puzzle_input):
     elf_sums = [
         sum(int(food) for food in elf.split('\n'))
-        for elf in raw_input.split('\n\n')
+        for elf in puzzle_input.split('\n\n')
     ]
     return elf_sums
 
 
-def solve_a(fname):
-    return max(get_calories(fname))
+def solve_a(puzzle_input):
+    return max(get_calories(puzzle_input))
 
 
-def solve_b(fname):
-    return sum(sorted(get_calories(fname))[-3:])
+def solve_b(puzzle_input):
+    return sum(sorted(get_calories(puzzle_input))[-3:])
 
 
 if __name__ == "__main__":
-    assert solve_a('../data/p1a_ex.txt') == 24_000
-    print(solve_a('../data/p1a.txt'))
+    puzzle_input = get_puzzle_input(__file__)
 
-    assert solve_b('../data/p1a_ex.txt') == 45_000
-    print(solve_b('../data/p1a.txt'))
+    assert solve_a(EXAMPLE_INPUT) == EXAMPLE_SOLUTION_A
+    print(solve_a(puzzle_input))
+
+    assert solve_b(EXAMPLE_INPUT) == EXAMPLE_SOLUTION_B
+    print(solve_b(puzzle_input))

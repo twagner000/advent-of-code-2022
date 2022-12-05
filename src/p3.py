@@ -1,22 +1,26 @@
 import pandas as pd
 from functools import reduce
+from utils import get_puzzle_input
+
+EXAMPLE_INPUT = """vJrwpWtwJgWrhcsFMMfFFhFp
+jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
+PmmdzqPrVvPwwTWBwg
+wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
+ttgJtRGJQctTZtZT
+CrZsJsPPZsGzwwsLwLmpwMDw"""
+EXAMPLE_SOLUTION_A = 157
+EXAMPLE_SOLUTION_B = 70
 
 PRIORITY = " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-
-def parse_input(fpath):
-    with open(fpath) as f:
-        lines = f.readlines()
-    return lines
 
 
 def reduce_intersect(row):
     return list(reduce(lambda a, b: a.intersection(b), row))[0]
 
 
-def solve_a(fpath):
+def solve_a(puzzle_input):
     df = (
-        pd.DataFrame({'raw': parse_input(fpath)})
+        pd.DataFrame({'raw': puzzle_input.split('\n')})
         .assign(
             raw=lambda df: df['raw'].str.strip(),
             len=lambda df: df['raw'].str.len(),
@@ -29,9 +33,9 @@ def solve_a(fpath):
     return df['priority'].sum()
 
 
-def solve_b(fpath):
+def solve_b(puzzle_input):
     df = (
-        pd.DataFrame({'raw': parse_input(fpath)})
+        pd.DataFrame({'raw': puzzle_input.split('\n')})
         .assign(
             raw=lambda df: df['raw'].str.strip(),
             group=lambda df: df.index // 3,
@@ -47,8 +51,10 @@ def solve_b(fpath):
 
 
 if __name__ == "__main__":
-    assert solve_a('../data/p3a_ex.txt') == 157
-    print(solve_a('../data/p3a.txt'))
+    puzzle_input = get_puzzle_input(__file__)
 
-    assert solve_b('../data/p3a_ex.txt') == 70
-    print(solve_b('../data/p3a.txt'))
+    assert solve_a(EXAMPLE_INPUT) == EXAMPLE_SOLUTION_A
+    print(solve_a(puzzle_input))
+
+    assert solve_b(EXAMPLE_INPUT) == EXAMPLE_SOLUTION_B
+    print(solve_b(puzzle_input))
